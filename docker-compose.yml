@@ -1,0 +1,35 @@
+services:
+  db_postgres:
+    image: postgres
+    container_name: db_postgres_app
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=app
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "54320:5432"
+    networks:
+      - spring-demo
+    restart: unless-stopped
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command: start-dev
+    ports:
+      - "8080:8080"
+
+
+
+networks:
+  spring-demo:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local

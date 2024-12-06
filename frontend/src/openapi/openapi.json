@@ -1,0 +1,699 @@
+{
+  "openapi": "3.0.1",
+  "info": { "title": "API Documentation", "version": "v1" },
+  "servers": [
+    {
+      "url": "http://localhost:8088/api/v1",
+      "description": "Generated server url"
+    }
+  ],
+  "security": [{ "bearerAuth": [] }],
+  "paths": {
+    "/transaction": {
+      "get": {
+        "tags": ["transaction-controller"],
+        "operationId": "getTransactions",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 0 }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 10 }
+          },
+          {
+            "name": "transactionType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "DEPOSIT",
+                "WITHDRAWAL",
+                "TRANSFER",
+                "PAYMENT",
+                "RECURRING"
+              ]
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "default": "latest" }
+          },
+          {
+            "name": "accountId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponseTransactionDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["transaction-controller"],
+        "operationId": "createTransaction",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TransactionDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/recurring-transactions": {
+      "get": {
+        "tags": ["recurring-transaction-controller"],
+        "operationId": "getRecurringTransactions",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecurringTransactionDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["recurring-transaction-controller"],
+        "operationId": "createRecurringTransaction",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecurringTransactionDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/goals": {
+      "get": {
+        "tags": ["goals-controller"],
+        "operationId": "getGoals",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/GoalsDto" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["goals-controller"],
+        "operationId": "createGoal",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/GoalsDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/category": {
+      "get": {
+        "tags": ["category-controller"],
+        "operationId": "getCategories",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/CategoryDto" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["category-controller"],
+        "operationId": "createCategory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CategoryDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/account": {
+      "get": {
+        "tags": ["account-controller"],
+        "operationId": "getAccounts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/AccountDto" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["account-controller"],
+        "operationId": "createAccount",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AccountDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/recurring-transactions/{recurringTransactionId}": {
+      "get": {
+        "tags": ["recurring-transaction-controller"],
+        "operationId": "getRecurringTransaction",
+        "parameters": [
+          {
+            "name": "recurringTransactionId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecurringTransactionDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["recurring-transaction-controller"],
+        "operationId": "deleteRecurringTransaction",
+        "parameters": [
+          {
+            "name": "recurringTransactionId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "patch": {
+        "tags": ["recurring-transaction-controller"],
+        "operationId": "updateRecurringTransaction",
+        "parameters": [
+          {
+            "name": "recurringTransactionId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecurringTransactionDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/goals/{goalId}": {
+      "get": {
+        "tags": ["goals-controller"],
+        "operationId": "getGoal",
+        "parameters": [
+          {
+            "name": "goalId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GoalsDto" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["goals-controller"],
+        "operationId": "deleteGoal",
+        "parameters": [
+          {
+            "name": "goalId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "patch": {
+        "tags": ["goals-controller"],
+        "operationId": "updateGoal",
+        "parameters": [
+          {
+            "name": "goalId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/GoalsDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/goals/{goalId}/add-amount": {
+      "patch": {
+        "tags": ["goals-controller"],
+        "operationId": "addAmount",
+        "parameters": [
+          {
+            "name": "goalId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/GoalsDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/category/{categoryId}": {
+      "get": {
+        "tags": ["category-controller"],
+        "operationId": "getCategory",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CategoryDto" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["category-controller"],
+        "operationId": "deleteCategory",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "patch": {
+        "tags": ["category-controller"],
+        "operationId": "updateCategory",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CategoryDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/account/{accountId}": {
+      "get": {
+        "tags": ["account-controller"],
+        "operationId": "getAccount",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AccountDto" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["account-controller"],
+        "operationId": "deleteAccount",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "patch": {
+        "tags": ["account-controller"],
+        "operationId": "updateAccount",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AccountDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/transaction/export-pdf/{accountId}": {
+      "get": {
+        "tags": ["transaction-controller"],
+        "operationId": "exportTransactionsToPdf",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "type": "string", "format": "byte" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recurring-transactions/sum": {
+      "get": {
+        "tags": ["recurring-transaction-controller"],
+        "operationId": "getRecurringTransactionsSum",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "type": "number", "format": "double" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hello_world/user": {
+      "get": {
+        "tags": ["hello-world"],
+        "operationId": "getUserId",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": { "schema": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "/hello_world/public": {
+      "get": {
+        "tags": ["hello-world"],
+        "operationId": "helloWorldPublic",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": { "schema": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "/hello_world/private": {
+      "get": {
+        "tags": ["hello-world"],
+        "operationId": "helloWorldPrivate",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": { "schema": { "type": "string" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccountDto": {
+        "required": ["accountType", "name", "status"],
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "user": { "$ref": "#/components/schemas/UserDto" },
+          "name": { "type": "string" },
+          "balance": { "type": "number", "format": "double" },
+          "accountType": {
+            "type": "string",
+            "enum": ["SAVINGS", "CHECKING", "CREDIT"]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["ACTIVE", "INACTIVE", "CLOSED"]
+          }
+        }
+      },
+      "TransactionDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "account": { "$ref": "#/components/schemas/AccountDto" },
+          "transactionType": {
+            "type": "string",
+            "enum": [
+              "DEPOSIT",
+              "WITHDRAWAL",
+              "TRANSFER",
+              "PAYMENT",
+              "RECURRING"
+            ]
+          },
+          "amount": { "type": "number", "format": "double" },
+          "transactionDate": { "type": "string", "format": "date-time" },
+          "reference": { "type": "string" },
+          "newBalance": { "type": "number", "format": "double" },
+          "user": { "$ref": "#/components/schemas/UserDto" }
+        }
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "username": { "type": "string" },
+          "email": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "CategoryDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "name": { "type": "string" },
+          "type": { "type": "string" },
+          "color": { "type": "string" },
+          "user": { "$ref": "#/components/schemas/UserDto" }
+        }
+      },
+      "RecurringTransactionDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "user": { "$ref": "#/components/schemas/UserDto" },
+          "account": { "$ref": "#/components/schemas/AccountDto" },
+          "category": { "$ref": "#/components/schemas/CategoryDto" },
+          "name": { "type": "string" },
+          "amount": { "type": "number", "format": "double" },
+          "frequency": {
+            "type": "string",
+            "enum": [
+              "DAILY",
+              "WEEKLY",
+              "BIWEEKLY",
+              "MONTHLY",
+              "BIMONTHLY",
+              "QUARTERLY",
+              "SEMIANNUALLY",
+              "ANNUALLY"
+            ]
+          },
+          "startDate": { "type": "string", "format": "date-time" },
+          "endDate": { "type": "string", "format": "date-time" }
+        }
+      },
+      "GoalsDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "user": { "$ref": "#/components/schemas/UserDto" },
+          "goalName": { "type": "string" },
+          "targetAmount": { "type": "number", "format": "double" },
+          "currentAmount": { "type": "number", "format": "double" },
+          "remainingAmount": { "type": "number", "format": "double" },
+          "startDate": { "type": "string", "format": "date-time" },
+          "targetDate": { "type": "string", "format": "date-time" }
+        }
+      },
+      "PageResponseTransactionDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/TransactionDto" }
+          },
+          "pageNum": { "type": "integer", "format": "int32" },
+          "pageSize": { "type": "integer", "format": "int32" },
+          "count": { "type": "integer", "format": "int64" },
+          "totalPages": { "type": "integer", "format": "int32" }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
