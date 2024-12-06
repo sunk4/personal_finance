@@ -22,6 +22,8 @@ const RecurringBills: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [searchName, setSearchName] = useState<string>("");
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
+  const [openOptionId, setOpenOptionId] = useState<string | null>(null);
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const { sum } = useRecurringTransactionsSum(user);
   const { recurringBills, isLoading, error, mutate } = useRecurringBills(
     user,
@@ -34,6 +36,7 @@ const RecurringBills: React.FC = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<RecurringTransactionDto>({
     resolver: yupResolver(
       recurringTransactionValidator
@@ -82,11 +85,21 @@ const RecurringBills: React.FC = () => {
         },
       };
 
-      const request: CreateRecurringTransactionRequest = {
-        recurringTransactionDto:
-          formattedData as unknown as RecurringTransactionDto,
-      };
-      await api.createRecurringTransaction(request);
+      if (isUpdating) {
+        await api.updateRecurringTransaction({
+          recurringTransactionId: openOptionId || "",
+          recurringTransactionDto:
+            formattedData as unknown as RecurringTransactionDto,
+        });
+        setIsUpdating(false);
+        setOpenOptionId(null);
+      } else {
+        const request: CreateRecurringTransactionRequest = {
+          recurringTransactionDto:
+            formattedData as unknown as RecurringTransactionDto,
+        };
+        await api.createRecurringTransaction(request);
+      }
       mutate();
       reset();
       setOpenCreateModal(false);
@@ -147,6 +160,18 @@ const RecurringBills: React.FC = () => {
           <RecurringBillsTable
             recurringBills={recurringBills ?? []}
             deleteItem={deleteReccuringBill}
+            setIsUpdating={setIsUpdating}
+            isUpdating={isUpdating}
+            onSubmitRecurringBill={onSubmitRecurringBill}
+            register={register}
+            handleSubmit={handleSubmit}
+            errors={errors}
+            onClickCloseModal={onClickCloseModal}
+            categories={categories}
+            user={user}
+            setValue={setValue}
+            openOptionId={openOptionId}
+            setOpenOptionId={setOpenOptionId}
           />
         </div>
       </div>

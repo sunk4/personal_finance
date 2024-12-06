@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { CategoryDto, RecurringTransactionDto } from "../../api";
 import { IoCloseOutline } from "react-icons/io5";
 import frequencyOptions from "../../data/frequencyOptions";
+import { format } from "date-fns";
 
 type ModalAddRecurringTransactionProps = {
   onSubmitRecurringBill: (data: RecurringTransactionDto) => Promise<void>;
@@ -11,6 +12,10 @@ type ModalAddRecurringTransactionProps = {
   errors: ReturnType<typeof useForm>["formState"]["errors"];
   onClickCloseModal: () => void;
   categories: CategoryDto[] | undefined;
+  setIsUpdating?: (isUpdating: boolean) => void;
+  isUpdating?: boolean;
+  recurringTransaction?: RecurringTransactionDto | null;
+  setValue?: ReturnType<typeof useForm>["setValue"];
 };
 
 const ModalAddRecurringTransaction: React.FC<
@@ -22,13 +27,39 @@ const ModalAddRecurringTransaction: React.FC<
   errors,
   onClickCloseModal,
   categories,
+  isUpdating,
+  recurringTransaction,
+  setValue,
 }) => {
+  useEffect(() => {
+    if (isUpdating && recurringTransaction && setValue) {
+      setValue("name", recurringTransaction?.name);
+      setValue("amount", recurringTransaction?.amount);
+      setValue(
+        "startDate",
+        recurringTransaction?.startDate
+          ? format(recurringTransaction?.startDate, "yyyy-MM-dd")
+          : ""
+      );
+      setValue(
+        "endDate",
+        recurringTransaction?.endDate
+          ? format(recurringTransaction?.endDate, "yyyy-MM-dd")
+          : ""
+      );
+      setValue("frequency", recurringTransaction?.frequency);
+      if (recurringTransaction?.category) {
+        setValue("category.id", recurringTransaction.category.id);
+      }
+    }
+  }, [recurringTransaction, setValue, isUpdating]);
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-md">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold flex-grow text-center">
-            Add Recurring Bill
+            {isUpdating ? "Update" : "Add"} Recurring Bill
           </h2>
           <button type="button" onClick={onClickCloseModal} className="ml-auto">
             <IoCloseOutline />
@@ -52,6 +83,7 @@ const ModalAddRecurringTransaction: React.FC<
             <input
               {...register("amount")}
               placeholder="Amount"
+              step={0.01}
               type="number"
               className="w-full text-sm p-2 border border-gray-300 rounded"
             />

@@ -19,11 +19,14 @@ const Goals: React.FC = () => {
 
   const { goals, error, isLoading, mutate } = useGoals(user);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+  const [openOptionId, setOpenOptionId] = useState<string | null>(null);
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<GoalsDto>({
     resolver: yupResolver(goalsValidator) as Resolver<GoalsDto>,
   });
@@ -38,9 +41,17 @@ const Goals: React.FC = () => {
         startDate: data.startDate ? new Date(data.startDate) : new Date(),
         targetDate: data.targetDate ? new Date(data.targetDate) : new Date(),
       };
-
-      const request: CreateGoalRequest = { goalsDto: formattedData };
-      await api.createGoal(request);
+      if (isUpdating) {
+        await api.updateGoal({
+          goalId: openOptionId || "",
+          goalsDto: formattedData,
+        });
+        setIsUpdating(false);
+        setOpenOptionId(null);
+      } else {
+        const request: CreateGoalRequest = { goalsDto: formattedData };
+        await api.createGoal(request);
+      }
       mutate();
       reset();
       setIsCreateModalOpen(false);
@@ -110,6 +121,17 @@ const Goals: React.FC = () => {
           goals={goals}
           deleteGoal={deleteGoal}
           addMoneytoGoal={addMoneytoGoal}
+          openOptionId={openOptionId}
+          setOpenOptionId={setOpenOptionId}
+          user={user}
+          setValue={setValue}
+          setIsUpdating={setIsUpdating}
+          isUpdating={isUpdating}
+          onSubmitGoal={onSubmitGoal}
+          register={register}
+          handleSubmit={handleSubmit}
+          errors={errors}
+          onClickCloseModal={onClickCloseModal}
         />
       )}
     </>

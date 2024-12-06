@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { GoalsDto } from "../../api";
 import { IoCloseOutline } from "react-icons/io5";
+import { format } from "date-fns";
 
 type ModalAddGoalProps = {
   onSubmitGoal: (data: GoalsDto) => Promise<void>;
@@ -9,6 +10,9 @@ type ModalAddGoalProps = {
   handleSubmit: ReturnType<typeof useForm>["handleSubmit"];
   errors: ReturnType<typeof useForm>["formState"]["errors"];
   onClickCloseModal: () => void;
+  isUpdating?: boolean;
+  goal?: GoalsDto | null;
+  setValue?: ReturnType<typeof useForm>["setValue"];
 };
 
 const ModalAddGoal: React.FC<ModalAddGoalProps> = ({
@@ -17,7 +21,25 @@ const ModalAddGoal: React.FC<ModalAddGoalProps> = ({
   register,
   errors,
   onClickCloseModal,
+  isUpdating,
+  goal,
+  setValue,
 }) => {
+  useEffect(() => {
+    if (isUpdating && goal && setValue) {
+      setValue("goalName", goal?.goalName);
+      setValue("targetAmount", goal?.targetAmount);
+      setValue(
+        "startDate",
+        goal?.startDate ? format(goal?.startDate, "yyyy-MM-dd") : ""
+      );
+      setValue(
+        "targetDate",
+        goal?.targetDate ? format(goal?.targetDate, "yyyy-MM-dd") : ""
+      );
+    }
+  }, [goal, setValue, isUpdating]);
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-md">

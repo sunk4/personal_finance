@@ -10,7 +10,6 @@ export const recurringTransactionValidator = yup.object().shape({
   frequency: yup.string().required("Frequency is required"),
   startDate: yup
     .date()
-    .min(new Date(), "Start date cannot be in the past")
     .typeError("Start date must be a valid date")
     .required("Start date is required"),
   endDate: yup

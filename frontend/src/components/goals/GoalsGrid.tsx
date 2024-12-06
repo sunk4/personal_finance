@@ -1,22 +1,52 @@
-import { AddAmountRequest, GoalsDto } from "../../api";
+import {
+  AddAmountRequest,
+  GetGoalRequest,
+  GoalsControllerApi,
+  GoalsDto,
+} from "../../api";
 import { BsThreeDots } from "react-icons/bs";
 import formatDate from "../../utils/formatDate";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalDeleteGoal from "./ModalDeleteGoal";
 import ModalAddMoney from "./ModalAddMoney";
+import { useForm } from "react-hook-form";
+import { User } from "oidc-client-ts";
+import { getConfiguration } from "../../config/config";
+import ModalAddGoal from "./ModalAddGoal";
 
 interface GoalsGridProps {
   goals: GoalsDto[];
   deleteGoal: (id: string) => Promise<void>;
   addMoneytoGoal: (data: AddAmountRequest) => Promise<void>;
+  openOptionId: string | null;
+  setOpenOptionId: (id: string | null) => void;
+  user: User | undefined | null;
+  setValue: ReturnType<typeof useForm>["setValue"];
+  isUpdating: boolean;
+  setIsUpdating: (isUpdating: boolean) => void;
+  onSubmitGoal: (data: GoalsDto) => Promise<void>;
+  register: ReturnType<typeof useForm>["register"];
+  handleSubmit: ReturnType<typeof useForm>["handleSubmit"];
+  errors: ReturnType<typeof useForm>["formState"]["errors"];
+  onClickCloseModal: () => void;
 }
 
 const GoalsGrid: React.FC<GoalsGridProps> = ({
   goals,
   deleteGoal,
   addMoneytoGoal,
+  openOptionId,
+  setOpenOptionId,
+  user,
+  setValue,
+  isUpdating,
+  setIsUpdating,
+  onSubmitGoal,
+  register,
+  handleSubmit,
+  errors,
+  onClickCloseModal,
 }) => {
-  const [openOptionId, setOpenOptionId] = useState<string | null>(null);
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const [openAddMoneyModal, setOpenAddMoneyModal] = useState<boolean>(false);
   const [openWithdrawMoneyModal, setOpenWithdrawMoneyModal] =
@@ -24,6 +54,7 @@ const GoalsGrid: React.FC<GoalsGridProps> = ({
   const [selectedGoalId, setSelectedGoalId] = useState<
     string | null | undefined
   >(null);
+  const [goal, setGoal] = useState<GoalsDto | null>(null);
 
   const handleOpenOptions = (id: string | undefined): void => {
     if (openOptionId === id) {
@@ -53,6 +84,29 @@ const GoalsGrid: React.FC<GoalsGridProps> = ({
     setOpenAddMoneyModal(false);
     setOpenWithdrawMoneyModal(false);
   };
+  const handleUpdateOpenModal = (): void => {
+    setIsUpdating(!isUpdating);
+  };
+
+  useEffect(() => {
+    if (openOptionId) {
+      const fetchRecurringTransaction = async () => {
+        const requestParameters: GetGoalRequest = {
+          goalId: openOptionId,
+        };
+        const config = getConfiguration(user);
+        const api = new GoalsControllerApi(config);
+        try {
+          const data = await api.getGoal(requestParameters);
+          setGoal(data);
+        } catch (error) {
+          console.error("Error fetching the recurring bill:", error);
+        }
+      };
+
+      fetchRecurringTransaction();
+    }
+  }, [openOptionId, user]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
@@ -78,6 +132,19 @@ const GoalsGrid: React.FC<GoalsGridProps> = ({
         />
       )}
 
+      {isUpdating && (
+        <ModalAddGoal
+          onSubmitGoal={onSubmitGoal}
+          register={register}
+          handleSubmit={handleSubmit}
+          errors={errors}
+          onClickCloseModal={onClickCloseModal}
+          goal={goal}
+          setValue={setValue}
+          isUpdating={isUpdating}
+        />
+      )}
+
       {goals.map((goal: GoalsDto) => (
         <div key={goal.id} className="bg-white shadow-md rounded-lg p-6">
           <div className="flex items-center justify-between mb-4">
@@ -88,7 +155,9 @@ const GoalsGrid: React.FC<GoalsGridProps> = ({
               </button>
               {openOptionId === goal.id && !openDeleteModal && (
                 <div className="absolute right-10 -top-2 rounded-lg bg-white p-2">
-                  <button className="text-sm">Edit</button>
+                  <button onClick={handleUpdateOpenModal} className="text-sm">
+                    Edit
+                  </button>
                   <hr />
                   <button
                     onClick={handleDeleteOpenModal}

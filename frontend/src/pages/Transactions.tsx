@@ -80,7 +80,6 @@ const Transactions: React.FC = () => {
       console.error("Error adding goal:", error);
     }
   };
-  console.log(accountId);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error fetching transactions</div>;
