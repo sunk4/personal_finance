@@ -114,6 +114,7 @@ const Transactions: React.FC = () => {
             transactionType={transactionType}
             accounts={accounts}
             setAccountId={setAccountId}
+            user={user}
           />
         )}
         <Pagination

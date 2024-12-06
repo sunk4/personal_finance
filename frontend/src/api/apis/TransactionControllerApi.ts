@@ -29,10 +29,6 @@ export interface CreateTransactionRequest {
     transactionDto: TransactionDto;
 }
 
-export interface ExportTransactionsToPdfRequest {
-    accountId: string;
-}
-
 export interface GetTransactionsRequest {
     page?: number;
     size?: number;
@@ -89,14 +85,7 @@ export class TransactionControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async exportTransactionsToPdfRaw(requestParameters: ExportTransactionsToPdfRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
-        if (requestParameters['accountId'] == null) {
-            throw new runtime.RequiredError(
-                'accountId',
-                'Required parameter "accountId" was null or undefined when calling exportTransactionsToPdf().'
-            );
-        }
-
+    async exportTransactionsToExcelRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -110,7 +99,7 @@ export class TransactionControllerApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/transaction/export-pdf/{accountId}`.replace(`{${"accountId"}}`, encodeURIComponent(String(requestParameters['accountId']))),
+            path: `/transaction/export-excel`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -125,8 +114,8 @@ export class TransactionControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async exportTransactionsToPdf(requestParameters: ExportTransactionsToPdfRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
-        const response = await this.exportTransactionsToPdfRaw(requestParameters, initOverrides);
+    async exportTransactionsToExcel(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
+        const response = await this.exportTransactionsToExcelRaw(initOverrides);
         return await response.value();
     }
 

@@ -7,6 +7,7 @@ import {
   TransactionDto,
 } from "../../api";
 import formatDate from "../../utils/formatDate";
+import { User } from "oidc-client-ts";
 
 type TableProps = {
   sort: string;
@@ -16,6 +17,7 @@ type TableProps = {
   transactions: PageResponseTransactionDto;
   accounts: AccountDto[] | undefined;
   setAccountId: (accountId: string) => void;
+  user: User | undefined | null;
 };
 
 const Table: React.FC<TableProps> = ({
@@ -26,9 +28,36 @@ const Table: React.FC<TableProps> = ({
   transactions,
   accounts,
   setAccountId,
+  user,
 }) => {
   const handleAccountChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setAccountId(e.target.value);
+  };
+
+  const exportToExcel = async () => {
+    const apiUrl =
+      import.meta.env.VITE_API_BASE_URL + "/transaction/export-excel";
+    try {
+      const response = await fetch(apiUrl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.access_token}`,
+        },
+      });
+
+      const outputFilename = `${formatDate(new Date())}_transactions.xlsx`;
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", outputFilename);
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -79,6 +108,12 @@ const Table: React.FC<TableProps> = ({
               </option>
             ))}
           </select>
+          <button
+            onClick={exportToExcel}
+            className="bg-black text-white rounded-lg px-4 py-2 text-xs font-bold"
+          >
+            Export to Excel
+          </button>
         </div>
       </div>
       <ul className="my-6">

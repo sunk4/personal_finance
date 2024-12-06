@@ -399,18 +399,10 @@
         "responses": { "200": { "description": "OK" } }
       }
     },
-    "/transaction/export-pdf/{accountId}": {
+    "/transaction/export-excel": {
       "get": {
         "tags": ["transaction-controller"],
-        "operationId": "exportTransactionsToPdf",
-        "parameters": [
-          {
-            "name": "accountId",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string", "format": "uuid" }
-          }
-        ],
+        "operationId": "exportTransactionsToExcel",
         "responses": {
           "200": {
             "description": "OK",
