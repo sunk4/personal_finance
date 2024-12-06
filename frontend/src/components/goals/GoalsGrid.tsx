@@ -131,7 +131,6 @@ const GoalsGrid: React.FC<GoalsGridProps> = ({
           handleCloseModal={handleCloseModal}
         />
       )}
-
       {isUpdating && (
         <ModalAddGoal
           onSubmitGoal={onSubmitGoal}
@@ -144,7 +143,6 @@ const GoalsGrid: React.FC<GoalsGridProps> = ({
           isUpdating={isUpdating}
         />
       )}
-
       {goals.map((goal: GoalsDto) => (
         <div key={goal.id} className="bg-white shadow-md rounded-lg p-6">
           <div className="flex items-center justify-between mb-4">
@@ -175,23 +173,25 @@ const GoalsGrid: React.FC<GoalsGridProps> = ({
               €{goal.currentAmount?.toFixed(2) ?? "N/A"}
             </p>
           </div>
-          {goal.targetAmount && goal.remainingAmount && (
+          {goal.targetAmount && (
             <>
               <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                 <div
-                  className={`h-2 rounded-full ${((goal.targetAmount - goal.remainingAmount) / goal.targetAmount) * 100 > 100 ? "bg-green-600" : "bg-warm-beige"}`}
+                  className={`h-2 rounded-full ${goal.remainingAmount !== undefined && ((goal.targetAmount - goal.remainingAmount) / goal.targetAmount) * 100 >= 100 ? "bg-green-600" : "bg-warm-beige"}`}
                   style={{
-                    width: `${((goal.targetAmount - goal.remainingAmount) / goal.targetAmount) * 100 <= 100 ? ((goal.targetAmount - goal.remainingAmount) / goal.targetAmount) * 100 : 100}%`,
+                    width: `${goal.remainingAmount !== undefined ? (((goal.targetAmount - goal.remainingAmount) / goal.targetAmount) * 100 <= 100 ? ((goal.targetAmount - goal.remainingAmount) / goal.targetAmount) * 100 : 100) : 0}%`,
                   }}
                 ></div>
               </div>
               <div className="flex justify-between mt-2">
                 <p className="text-gray-400 text-xs font-semibold">
-                  {(
-                    ((goal.targetAmount - goal.remainingAmount) /
-                      goal.targetAmount) *
-                    100
-                  ).toFixed(2)}
+                  {goal.remainingAmount !== undefined
+                    ? (
+                        ((goal.targetAmount - goal.remainingAmount) /
+                          goal.targetAmount) *
+                        100
+                      ).toFixed(2)
+                    : "N/A"}
                   %
                 </p>
                 <p className="text-gray-400 text-xs">

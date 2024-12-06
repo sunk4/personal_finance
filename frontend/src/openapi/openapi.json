@@ -157,38 +157,6 @@
         "responses": { "200": { "description": "OK" } }
       }
     },
-    "/category": {
-      "get": {
-        "tags": ["category-controller"],
-        "operationId": "getCategories",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/CategoryDto" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": ["category-controller"],
-        "operationId": "createCategory",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/CategoryDto" }
-            }
-          },
-          "required": true
-        },
-        "responses": { "200": { "description": "OK" } }
-      }
-    },
     "/account": {
       "get": {
         "tags": ["account-controller"],
@@ -218,7 +186,16 @@
           },
           "required": true
         },
-        "responses": { "200": { "description": "OK" } }
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "type": "string", "format": "uuid" }
+              }
+            }
+          }
+        }
       }
     },
     "/recurring-transactions/{recurringTransactionId}": {
@@ -357,64 +334,6 @@
           "content": {
             "application/json": {
               "schema": { "$ref": "#/components/schemas/GoalsDto" }
-            }
-          },
-          "required": true
-        },
-        "responses": { "200": { "description": "OK" } }
-      }
-    },
-    "/category/{categoryId}": {
-      "get": {
-        "tags": ["category-controller"],
-        "operationId": "getCategory",
-        "parameters": [
-          {
-            "name": "categoryId",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string", "format": "uuid" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/CategoryDto" }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": ["category-controller"],
-        "operationId": "deleteCategory",
-        "parameters": [
-          {
-            "name": "categoryId",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string", "format": "uuid" }
-          }
-        ],
-        "responses": { "200": { "description": "OK" } }
-      },
-      "patch": {
-        "tags": ["category-controller"],
-        "operationId": "updateCategory",
-        "parameters": [
-          {
-            "name": "categoryId",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string", "format": "uuid" }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/CategoryDto" }
             }
           },
           "required": true
@@ -619,18 +538,6 @@
           "updatedAt": { "type": "string", "format": "date-time" }
         }
       },
-      "CategoryDto": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "string", "format": "uuid" },
-          "createdAt": { "type": "string", "format": "date-time" },
-          "updatedAt": { "type": "string", "format": "date-time" },
-          "name": { "type": "string" },
-          "type": { "type": "string" },
-          "color": { "type": "string" },
-          "user": { "$ref": "#/components/schemas/UserDto" }
-        }
-      },
       "RecurringTransactionDto": {
         "type": "object",
         "properties": {
@@ -639,7 +546,6 @@
           "updatedAt": { "type": "string", "format": "date-time" },
           "user": { "$ref": "#/components/schemas/UserDto" },
           "account": { "$ref": "#/components/schemas/AccountDto" },
-          "category": { "$ref": "#/components/schemas/CategoryDto" },
           "name": { "type": "string" },
           "amount": { "type": "number", "format": "double" },
           "frequency": {

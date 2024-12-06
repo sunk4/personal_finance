@@ -13,12 +13,12 @@ import com.app.repository.AccountRepository;
 import com.app.repository.RecurringTransactionRepository;
 import com.app.repository.TransactionRepository;
 import com.app.repository.UserRepository;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Table;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -26,6 +26,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -118,40 +119,6 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public byte[] exportTransactionsToPdf (UUID accountId) {
-        List<Transaction> transactions =
-                transactionRepository.findByAccountId(accountId);
-
-        ByteArrayOutputStream byteArrayOutputStream =
-                new ByteArrayOutputStream();
-        PdfWriter writer = new PdfWriter(byteArrayOutputStream);
-        PdfDocument pdfDocument = new PdfDocument(writer);
-        Document document = new Document(pdfDocument);
-        float[] columnWidths = {100, 100, 100, 100, 100};
-        Table table = new Table(columnWidths);
-
-        table.addHeaderCell("Transaction ID");
-        table.addHeaderCell("Account");
-        table.addHeaderCell("Transaction Type");
-        table.addHeaderCell("Amount");
-        table.addHeaderCell("Transaction Date");
-        table.addHeaderCell("Reference");
-
-        for (Transaction transaction : transactions) {
-            table.addCell(String.valueOf(transaction.getId()));
-            table.addCell(transaction.getAccount().getName());
-            table.addCell(String.valueOf(transaction.getTransactionType()));
-            table.addCell(String.valueOf(transaction.getAmount()));
-            table.addCell(String.valueOf(transaction.getTransactionDate()));
-            table.addCell(transaction.getReference());
-
-        }
-        document.add(table);
-        document.close();
-        return byteArrayOutputStream.toByteArray();
-    }
-
-    @Override
     @Scheduled(cron = "0 0 0 * * ?")
     public void cronJobAddRecurringTransactionToTransaction () {
         List<RecurringTransaction> recurringTransactions =
@@ -174,6 +141,44 @@ public class TransactionServiceImpl implements TransactionService {
                 recurringTransactionRepository.save(recurringTransaction);
             }
 
+        }
+    }
+
+    @Override
+    public byte[] exportTransactionsToExcel (UUID userId) {
+        List<Transaction> transactions =
+                transactionRepository.findByUserId(userId);
+
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Transactions");
+
+            Row headerRow = sheet.createRow(0);
+            headerRow.createCell(0).setCellValue("Id");
+            headerRow.createCell(1).setCellValue("Account");
+            headerRow.createCell(2).setCellValue("Reference");
+            headerRow.createCell(3).setCellValue("Transaction type");
+            headerRow.createCell(4).setCellValue("Transaction date");
+            headerRow.createCell(5).setCellValue("Amount");
+            headerRow.createCell(6).setCellValue("Balance");
+
+            int rowNum = 1;
+            for (Transaction transaction : transactions) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(transaction.getId().toString());
+                row.createCell(1).setCellValue(transaction.getAccount().getName());
+                row.createCell(2).setCellValue(transaction.getReference());
+                row.createCell(3).setCellValue(transaction.getTransactionType().name());
+                row.createCell(4).setCellValue(transaction.getTransactionDate().toString());
+                row.createCell(5).setCellValue(transaction.getAmount());
+                row.createCell(6).setCellValue(transaction.getNewBalance());
+            }
+
+            try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+                workbook.write(out);
+                return out.toByteArray();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to export transactions to Excel", e);
         }
     }
 

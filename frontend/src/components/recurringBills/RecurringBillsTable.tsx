@@ -1,6 +1,5 @@
 import { BsThreeDots } from "react-icons/bs";
 import {
-  CategoryDto,
   GetRecurringTransactionRequest,
   RecurringTransactionControllerApi,
   RecurringTransactionDto,
@@ -23,7 +22,6 @@ type RecurringBillsTableProps = {
   handleSubmit: ReturnType<typeof useForm>["handleSubmit"];
   errors: ReturnType<typeof useForm>["formState"]["errors"];
   onClickCloseModal: () => void;
-  categories: CategoryDto[] | undefined;
   user: User | undefined | null;
   setValue: ReturnType<typeof useForm>["setValue"];
   openOptionId: string | null;
@@ -40,7 +38,6 @@ const RecurringBillsTable: React.FC<RecurringBillsTableProps> = ({
   handleSubmit,
   errors,
   onClickCloseModal,
-  categories,
   user,
   setValue,
   openOptionId,
@@ -90,7 +87,6 @@ const RecurringBillsTable: React.FC<RecurringBillsTableProps> = ({
       <li className="p-2 flex justify-between items-center">
         <p className="text-gray-400 text-xs w-1/6 text-center">Account name</p>
         <p className="text-gray-400 text-xs w-1/6 text-center">Name</p>
-        <p className="text-gray-400 text-xs w-1/6 text-center">Category</p>
         <p className="text-gray-400 text-xs w-1/6 text-center">Frequency</p>
         <p className="text-gray-400 text-xs w-1/6 text-center">Start Date</p>
         <p className="text-gray-400 text-xs w-1/6 text-center">End Date</p>
@@ -106,9 +102,7 @@ const RecurringBillsTable: React.FC<RecurringBillsTableProps> = ({
                 {bill.account?.name}
               </p>
               <p className="text-center text-xs font-bold w-1/6">{bill.name}</p>
-              <p className="text-gray-400 text-xs text-center w-1/6">
-                {bill.category?.name}
-              </p>
+
               <p className="text-gray-400 text-xs text-center w-1/6">
                 {bill.frequency}
               </p>
@@ -165,7 +159,6 @@ const RecurringBillsTable: React.FC<RecurringBillsTableProps> = ({
           handleSubmit={handleSubmit}
           errors={errors}
           onClickCloseModal={onClickCloseModal}
-          categories={categories}
           isUpdating={isUpdating}
           setIsUpdating={setIsUpdating}
           recurringTransaction={recurringTransaction}

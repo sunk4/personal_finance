@@ -25,7 +25,9 @@ const Settings: React.FC = () => {
   };
 
   useEffect(() => {
-    localStorage.setItem("accountId", accountId);
+    if (accountId) {
+      localStorage.setItem("accountId", accountId);
+    }
   }, [accountId]);
 
   const {
@@ -57,7 +59,11 @@ const Settings: React.FC = () => {
         accountDto: data,
       };
 
-      await api.createAccount(request);
+      const account = await api.createAccount(request);
+
+      if (accounts && accounts.length == 0) {
+        localStorage.setItem("accountId", account);
+      }
       reset();
       mutate();
       setIsModalOpen(false);
@@ -81,21 +87,22 @@ const Settings: React.FC = () => {
             register={register}
           />
         )}
-        <h1 className="text-lg font-bold ">Settings</h1>
+        <h1 className="text-lg font-bold">Settings</h1>
         <div className="flex gap-2">
-          <select
-            onChange={handleSelectChange}
-            value={accountId}
-            className="w-full text-sm p-2 border bg-white rounded"
-          >
-            {accounts &&
-              accounts.map((option) => (
+          {accounts && accounts.length > 0 && (
+            <select
+              onChange={handleSelectChange}
+              value={accountId}
+              className="text-sm px-4 py-2 border bg-white rounded border-gray-300"
+            >
+              {accounts.map((option) => (
                 <option key={option.id} value={option.id} className="text-sm">
                   {option.name}
                 </option>
               ))}
-          </select>
-          {accounts && (
+            </select>
+          )}
+          {accounts && accounts.length > 0 && (
             <button
               onClick={onClickOpenModal}
               className="rounded-lg bg-black text-white px-4 py-2 font-semibold text-sm"
@@ -106,7 +113,7 @@ const Settings: React.FC = () => {
         </div>
       </div>
       <section className="bg-white rounded-xl p-10">
-        {accounts ? (
+        {accounts && accounts.length > 0 ? (
           <TableAccounts accounts={accounts} />
         ) : (
           <div className="flex flex-col items-center justify-center h-full">

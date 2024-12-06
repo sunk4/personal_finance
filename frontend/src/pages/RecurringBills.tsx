@@ -13,7 +13,6 @@ import {
 import ModalAddRecurringTransaction from "../components/recurringBills/ModalAddRecurringTransaction";
 import { Resolver, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import useCategories from "../hooks/useCategories";
 import { recurringTransactionValidator } from "../validators/recurringTransactionValidator";
 
 const RecurringBills: React.FC = () => {
@@ -29,8 +28,6 @@ const RecurringBills: React.FC = () => {
     user,
     searchName
   );
-  const { categories } = useCategories(user);
-
   const {
     register,
     handleSubmit,
@@ -121,7 +118,6 @@ const RecurringBills: React.FC = () => {
             handleSubmit={handleSubmit}
             errors={errors}
             onClickCloseModal={onClickCloseModal}
-            categories={categories}
           />
         )}
         <h1 className="text-lg font-bold ">Recurring Bills</h1>
@@ -167,7 +163,6 @@ const RecurringBills: React.FC = () => {
             handleSubmit={handleSubmit}
             errors={errors}
             onClickCloseModal={onClickCloseModal}
-            categories={categories}
             user={user}
             setValue={setValue}
             openOptionId={openOptionId}

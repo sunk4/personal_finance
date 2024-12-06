@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { CategoryDto, RecurringTransactionDto } from "../../api";
+import { RecurringTransactionDto } from "../../api";
 import { IoCloseOutline } from "react-icons/io5";
 import frequencyOptions from "../../data/frequencyOptions";
 import { format } from "date-fns";
@@ -11,7 +11,6 @@ type ModalAddRecurringTransactionProps = {
   handleSubmit: ReturnType<typeof useForm>["handleSubmit"];
   errors: ReturnType<typeof useForm>["formState"]["errors"];
   onClickCloseModal: () => void;
-  categories: CategoryDto[] | undefined;
   setIsUpdating?: (isUpdating: boolean) => void;
   isUpdating?: boolean;
   recurringTransaction?: RecurringTransactionDto | null;
@@ -26,7 +25,6 @@ const ModalAddRecurringTransaction: React.FC<
   register,
   errors,
   onClickCloseModal,
-  categories,
   isUpdating,
   recurringTransaction,
   setValue,
@@ -48,11 +46,10 @@ const ModalAddRecurringTransaction: React.FC<
           : ""
       );
       setValue("frequency", recurringTransaction?.frequency);
-      if (recurringTransaction?.category) {
-        setValue("category.id", recurringTransaction.category.id);
-      }
     }
   }, [recurringTransaction, setValue, isUpdating]);
+
+  console.log(errors);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -65,6 +62,7 @@ const ModalAddRecurringTransaction: React.FC<
             <IoCloseOutline />
           </button>
         </div>
+
         <form onSubmit={handleSubmit(onSubmitRecurringBill)}>
           <div className="mb-4">
             <input
@@ -137,25 +135,6 @@ const ModalAddRecurringTransaction: React.FC<
               <span className="text-red-500 text-sm">
                 {typeof errors.frequency?.message === "string" &&
                   errors.frequency.message}
-              </span>
-            )}
-          </div>
-          <div className="mb-4">
-            <select
-              {...register("category.id")}
-              className="w-full text-sm p-2 border bg-white rounded"
-            >
-              {categories &&
-                categories.map((option) => (
-                  <option key={option.id} value={option.id} className="text-sm">
-                    {option.name}
-                  </option>
-                ))}
-            </select>
-            {errors.category && (
-              <span className="text-red-500 text-sm">
-                {typeof errors.category.message === "string" &&
-                  errors.category.message}
               </span>
             )}
           </div>

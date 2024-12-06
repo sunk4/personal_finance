@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 public class RecurringTransactionDto extends BaseDto {
     private UserDto user;
     private AccountDto account;
-    private CategoryDto category;
     private String name;
     private double amount;
     private Frequency frequency;

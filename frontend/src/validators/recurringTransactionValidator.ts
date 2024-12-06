@@ -17,7 +17,4 @@ export const recurringTransactionValidator = yup.object().shape({
     .typeError("End date must be a valid date")
     .min(yup.ref("startDate"), "End date cannot be before start date")
     .required("End date is required"),
-  category: yup.object().shape({
-    id: yup.string().required("Category ID is required"),
-  }),
 });

@@ -46,7 +46,7 @@ export class AccountControllerApi extends runtime.BaseAPI {
 
     /**
      */
-    async createAccountRaw(requestParameters: CreateAccountRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async createAccountRaw(requestParameters: CreateAccountRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
         if (requestParameters['accountDto'] == null) {
             throw new runtime.RequiredError(
                 'accountDto',
@@ -76,13 +76,18 @@ export class AccountControllerApi extends runtime.BaseAPI {
             body: AccountDtoToJSON(requestParameters['accountDto']),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        if (this.isJsonMime(response.headers.get('content-type'))) {
+            return new runtime.JSONApiResponse<string>(response);
+        } else {
+            return new runtime.TextApiResponse(response) as any;
+        }
     }
 
     /**
      */
-    async createAccount(requestParameters: CreateAccountRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.createAccountRaw(requestParameters, initOverrides);
+    async createAccount(requestParameters: CreateAccountRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
+        const response = await this.createAccountRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

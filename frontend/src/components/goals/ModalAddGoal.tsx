@@ -69,6 +69,7 @@ const ModalAddGoal: React.FC<ModalAddGoalProps> = ({
             <input
               {...register("targetAmount")}
               placeholder="Target Amount"
+              step={0.01}
               type="number"
               className="w-full text-sm p-2 border border-gray-300 rounded"
             />

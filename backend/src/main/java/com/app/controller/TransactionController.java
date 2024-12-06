@@ -42,19 +42,18 @@ public class TransactionController {
                 size, transactionType, sort, accountId, userId));
     }
 
-    @GetMapping("/export-pdf/{accountId}")
-    public ResponseEntity<byte[]> exportTransactionsToPdf (
-            @PathVariable UUID accountId
+    @GetMapping("/export-excel")
+    public ResponseEntity<byte[]> exportTransactionsToExcel (
+            @RequestAttribute("userId") UUID userId
     ) {
 
-        byte[] pdfBytes = transactionService.exportTransactionsToPdf(accountId);
-
+        byte[] excelBytes = transactionService.exportTransactionsToExcel(userId);
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("attachment", "transactions.pdf");
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "transactions.xlsx");
         return ResponseEntity.ok()
                 .headers(headers)
-                .body(pdfBytes);
+                .body(excelBytes);
     }
 
 }

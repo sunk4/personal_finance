@@ -28,12 +28,14 @@ public class AccountServiceImpl implements AccountService {
     private final TransactionRepository transactionRepository;
 
     @Override
-    public void createAccount (AccountDto accountDto, UUID userId) {
+    public UUID createAccount (AccountDto accountDto, UUID userId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
             UserDto userDto = userMapper.toDto(user.get());
             accountDto.setUser(userDto);
-            accountRepository.save(accountMapper.toEntity(accountDto));
+            Account savedAccount =
+                    accountRepository.save(accountMapper.toEntity(accountDto));
+            return savedAccount.getId();
         } else {
             throw new RuntimeException("User not found");
         }

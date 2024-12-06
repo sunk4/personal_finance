@@ -17,7 +17,7 @@ public interface TransactionService {
             UUID userId
     );
 
-    byte[] exportTransactionsToPdf (UUID accountId);
-
     void cronJobAddRecurringTransactionToTransaction ();
+
+    byte[] exportTransactionsToExcel (UUID userId);
 }

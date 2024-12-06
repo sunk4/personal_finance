@@ -2,15 +2,12 @@ package com.app.service;
 
 import com.app.Dto.RecurringTransactionDto;
 import com.app.entity.Account;
-import com.app.entity.Category;
 import com.app.entity.RecurringTransaction;
 import com.app.entity.User;
 import com.app.mapper.AccountMapper;
-import com.app.mapper.CategoryMapper;
 import com.app.mapper.RecurringTransactionsMapper;
 import com.app.mapper.UserMapper;
 import com.app.repository.AccountRepository;
-import com.app.repository.CategoryRepository;
 import com.app.repository.RecurringTransactionRepository;
 import com.app.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -26,11 +23,9 @@ public class RecurringTransactionServiceImpl implements RecurringTransactionServ
     private final UserRepository userRepository;
     private final RecurringTransactionRepository recurringTransactionRepository;
     private final AccountRepository accountRepository;
-    private final CategoryRepository categoryRepository;
     private final AccountMapper accountMapper;
     private final UserMapper userMapper;
     private final RecurringTransactionsMapper recurringTransactionMapper;
-    private final CategoryMapper categoryMapper;
 
     @Override
     public void createRecurringTransaction (RecurringTransactionDto recurringTransactionDto, UUID userId) {
@@ -42,12 +37,8 @@ public class RecurringTransactionServiceImpl implements RecurringTransactionServ
                         .orElseThrow(() -> new EntityNotFoundException(
                                 "Account not found"));
 
-        Category category = categoryRepository.findById(recurringTransactionDto.getCategory().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
-
         recurringTransactionDto.setUser(userMapper.toDto(user));
         recurringTransactionDto.setAccount(accountMapper.toDto(account));
-        recurringTransactionDto.setCategory(categoryMapper.toDto(category));
 
         RecurringTransaction recurringTransaction = recurringTransactionMapper.toEntity(recurringTransactionDto);
 
@@ -88,9 +79,6 @@ public class RecurringTransactionServiceImpl implements RecurringTransactionServ
         Account account = accountRepository.findById(recurringTransaction.getAccount().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Account not found"));
 
-        Category category = categoryRepository.findById(recurringTransaction.getCategory().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
-
         if (recurringTransactionDto.getUser() != null) {
             user = userRepository.findById(recurringTransactionDto.getUser().getId())
                     .orElseThrow(() -> new EntityNotFoundException("User not found"));
@@ -101,14 +89,8 @@ public class RecurringTransactionServiceImpl implements RecurringTransactionServ
                     .orElseThrow(() -> new EntityNotFoundException("Account not found"));
         }
 
-        if (recurringTransactionDto.getCategory() != null) {
-            category = categoryRepository.findById(recurringTransactionDto.getCategory().getId())
-                    .orElseThrow(() -> new EntityNotFoundException("Category not found"));
-        }
-
         recurringTransaction.setUser(user);
         recurringTransaction.setAccount(account);
-        recurringTransaction.setCategory(category);
 
         if (recurringTransactionDto.getName() != null) {
             recurringTransaction.setName(recurringTransactionDto.getName());

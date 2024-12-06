@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface AccountService {
 
-    void createAccount (AccountDto accountDto, UUID userId);
+    UUID createAccount (AccountDto accountDto, UUID userId);
 
     List<AccountDto> getAccounts (UUID userId);
 

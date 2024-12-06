@@ -49,6 +49,7 @@ const ModalAddAccount: React.FC<ModalAddAccountProps> = ({
             <input
               {...register("balance")}
               placeholder="Balance"
+              step={0.01}
               type="number"
               className="w-full text-sm p-2 border border-gray-300 rounded"
             />

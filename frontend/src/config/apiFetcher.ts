@@ -5,7 +5,6 @@ import {
   TransactionControllerApi,
   GoalsControllerApi,
   AccountControllerApi,
-  CategoryControllerApi,
   RecurringTransactionControllerApi,
 } from "../api";
 
@@ -24,14 +23,12 @@ export const apiFetcher = (
   const transactionApi = new TransactionControllerApi(config);
   const goalsApi = new GoalsControllerApi(config);
   const accountApi = new AccountControllerApi(config);
-  const categoryApi = new CategoryControllerApi(config);
   const recurringTransactionApi = new RecurringTransactionControllerApi(config);
 
   return apiCall({
     transactionApi,
     goalsApi,
     accountApi,
-    categoryApi,
     recurringTransactionApi,
   });
 };

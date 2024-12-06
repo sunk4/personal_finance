@@ -19,9 +19,9 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping
-    public ResponseEntity<Void> createAccount (@Valid @RequestBody AccountDto accountDto, @RequestAttribute("userId") UUID userId) {
-        accountService.createAccount(accountDto, userId);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<UUID> createAccount (@Valid @RequestBody AccountDto accountDto, @RequestAttribute("userId") UUID userId) {
+        UUID accountId = accountService.createAccount(accountDto, userId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(accountId);
     }
 
     @GetMapping

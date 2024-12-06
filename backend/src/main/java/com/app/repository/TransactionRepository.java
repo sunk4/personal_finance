@@ -21,5 +21,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
 
     void deleteByAccountId (UUID accountId);
 
-    List<Transaction> findByAccountId (UUID accountId);
+    List<Transaction> findByUserId (UUID userId);
 }

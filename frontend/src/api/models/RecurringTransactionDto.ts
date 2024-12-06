@@ -13,13 +13,6 @@
  */
 
 import { mapValues } from '../runtime';
-import type { CategoryDto } from './CategoryDto';
-import {
-    CategoryDtoFromJSON,
-    CategoryDtoFromJSONTyped,
-    CategoryDtoToJSON,
-    CategoryDtoToJSONTyped,
-} from './CategoryDto';
 import type { UserDto } from './UserDto';
 import {
     UserDtoFromJSON,
@@ -71,12 +64,6 @@ export interface RecurringTransactionDto {
      * @memberof RecurringTransactionDto
      */
     account?: AccountDto;
-    /**
-     * 
-     * @type {CategoryDto}
-     * @memberof RecurringTransactionDto
-     */
-    category?: CategoryDto;
     /**
      * 
      * @type {string}
@@ -148,7 +135,6 @@ export function RecurringTransactionDtoFromJSONTyped(json: any, ignoreDiscrimina
         'updatedAt': json['updatedAt'] == null ? undefined : (new Date(json['updatedAt'])),
         'user': json['user'] == null ? undefined : UserDtoFromJSON(json['user']),
         'account': json['account'] == null ? undefined : AccountDtoFromJSON(json['account']),
-        'category': json['category'] == null ? undefined : CategoryDtoFromJSON(json['category']),
         'name': json['name'] == null ? undefined : json['name'],
         'amount': json['amount'] == null ? undefined : json['amount'],
         'frequency': json['frequency'] == null ? undefined : json['frequency'],
@@ -173,7 +159,6 @@ export function RecurringTransactionDtoToJSONTyped(value?: RecurringTransactionD
         'updatedAt': value['updatedAt'] == null ? undefined : ((value['updatedAt']).toISOString()),
         'user': UserDtoToJSON(value['user']),
         'account': AccountDtoToJSON(value['account']),
-        'category': CategoryDtoToJSON(value['category']),
         'name': value['name'],
         'amount': value['amount'],
         'frequency': value['frequency'],
