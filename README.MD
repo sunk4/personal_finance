@@ -1,12 +1,10 @@
-# Task Tracker
+# Personal Finance App
 
-A task tracker helps admins, managers, and users organize, prioritize, assign, and track tasks in real-time. It features notifications, status updates, and collaboration tools to ensure deadlines are met and workloads are managed efficiently.
+The Personal Finance App is designed to help users manage their financial transactions and track their expenses efficiently. It provides features for exporting transaction data, viewing transaction history, managing user accounts, setting financial goals, and handling recurring transactions.
 
-- **Admins**: Have full control over all tasks and user management.
-- **Managers**: Can create, assign, and monitor tasks and projects within their teams.
-- **Users**: Can view and comment their assigned tasks.
+- **Users**: Can manage their own financial transactions, set personal goals, handle recurring payments, and export their transaction history. They can only view and modify their own data.
 
-![PostgreSQL Schema Diagram](task_tracker_postgresql.png)
+![PostgreSQL Schema Diagram](finance-app-schema.png)
 
 **Note:** The service is running on a free tier on render.com, so performance may be limited. You can access it here: [Task Tracker Service](https://task-tracker-w7g0.onrender.com/projects)
 
@@ -23,9 +21,11 @@ A task tracker helps admins, managers, and users organize, prioritize, assign, a
 
 ## Features
 
-- Task Management: Easily create, assign, and prioritize tasks with deadlines and status updates.
-- Progress Tracking: Monitor the status of tasks in real-time, ensuring deadlines are met and projects stay on schedule.
-- Collaboration: Share tasks and updates with team members, enabling seamless communication and coordination.
+- **Expense Tracking:** Effortlessly log, categorize, and monitor your financial transactions to gain better control over your spending.
+- **Goal Management:** Set financial goals, and track your progress in real-time to stay on top of your financial health.
+- **Recurring Transactions:** Automate recurring payments and income to save time and avoid missed deadlines.
+- **Data Export:** Export transaction histories and reports for deeper analysis or record-keeping.
+- **Privacy-First Design:** Ensure your data is secure and accessible only to you.
 
 ## Technologies
 
@@ -49,27 +49,28 @@ List the software and tools required to run the application.
 - Node.js (for frontend development)
 ```
 
-
 ### Installation and Running the application
 
 1. Clone the repository:
 
-    ```bash
-    git clone https://github.com/sunk4/task-tracker
-    ```
+   ```bash
+   git clone https://github.com/sunk4/task-tracker
+   ```
 
 2. Build and run the backend services using Docker Compose:
 
-    ```bash
-    docker-compose up --build
-    ```
+   ```bash
+   docker-compose up --build
+   ```
 
    > **To stop the backend**, press `Ctrl+C` in the terminal, or run the following in another terminal:
+
    ```bash
    docker-compose down
    ```
 
 3. Open a new terminal for the frontend, and navigate to the frontend directory:
+
    ```bash
    cd frontend
    ```
@@ -92,9 +93,11 @@ List the software and tools required to run the application.
 Once the backend and frontend are running, follow these steps to use the application:
 
 1. **Access the application**:
+
    - Open your browser and navigate to `http://localhost:5174` to access the frontend of the application.
 
 2. **Backend API**:
+
    - The backend API is running at `http://localhost:8088`. You can interact with it via tools like Postman or Curl.
    - Example: If it's a REST API, you can try an endpoint like:
      ```bash
@@ -123,5 +126,3 @@ If you have any questions or feedback, feel free to reach out:
 - **Email:** trnka.roman.careers@gmail.com
 - **LinkedIn:** [Roman Trnka](https://www.linkedin.com/in/roman-trnka-938666169/)
 - **GitHub:** [sunk4](https://github.com/sunk4/task-tracker)
-
-            
