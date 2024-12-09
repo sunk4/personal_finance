@@ -14,6 +14,7 @@ import { transactionValidators } from "../validators/transactionValidators";
 import { getConfiguration } from "../config/config";
 import ModalAddTransaction from "../components/transactions/ModalAddTransaction";
 import useAccount from "../hooks/useAccount";
+import Header from "../components/common/Header";
 
 const Transactions: React.FC = () => {
   const { user } = useAuth();
@@ -86,24 +87,16 @@ const Transactions: React.FC = () => {
 
   return (
     <>
-      <div className="mb-4 flex justify-between">
-        {isCreateModalOpen && (
-          <ModalAddTransaction
-            onSubmitTransaction={onSubmitTransaction}
-            register={register}
-            handleSubmit={handleSubmit}
-            errors={errors}
-            onClickCloseModal={onClickCloseModal}
-          />
-        )}
-        <h1 className="text-lg font-bold ">Transactions</h1>
-        <button
-          onClick={onClickOpenModal}
-          className="rounded-lg bg-black text-white px-4 py-2 font-semibold text-sm"
-        >
-          Add Transactions
-        </button>
-      </div>
+      {isCreateModalOpen && (
+        <ModalAddTransaction
+          onSubmitTransaction={onSubmitTransaction}
+          register={register}
+          handleSubmit={handleSubmit}
+          errors={errors}
+          onClickCloseModal={onClickCloseModal}
+        />
+      )}
+      <Header onClickOpenModal={onClickOpenModal} text="Transaction" />
       <section className="bg-white rounded-xl p-10">
         {transactions && (
           <Table

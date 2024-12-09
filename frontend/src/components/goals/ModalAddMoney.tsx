@@ -1,9 +1,11 @@
 import React from "react";
 import { AddAmountRequest, AddWithdrawMoneyFromGoalDto } from "../../api";
-import { IoCloseOutline } from "react-icons/io5";
 import { Resolver, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { goalsAddMoneyValidator } from "../../validators/goalsValidator";
+import ModalHeader from "../common/ModalHeader";
+import NumberInputField from "../common/NumberInputField";
+import SubmitButton from "../common/SubmitButton";
 
 type ModalAddMoneyProps = {
   addMoneytoGoal: (data: AddAmountRequest) => Promise<void>;
@@ -50,39 +52,23 @@ const ModalAddMoney: React.FC<ModalAddMoneyProps> = ({
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-md">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold flex-grow text-center">
-            {openWithdrawMoneyModal
+        <ModalHeader
+          title={
+            openWithdrawMoneyModal
               ? "Withdraw Money from Goal"
-              : "Add Money to Goal"}
-          </h2>
-          <button type="button" onClick={handleCloseModal} className="ml-auto">
-            <IoCloseOutline />
-          </button>
-        </div>
+              : "Add Money to Goal"
+          }
+          onClickCloseModal={handleCloseModal}
+        />
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-4">
-            <input
-              {...register("amount")}
-              placeholder="Amount"
-              step={0.01}
-              type="number"
-              className="w-full text-sm p-2 border border-gray-300 rounded"
-            />
-            {errors.amount && (
-              <span className="text-red-500 text-sm">
-                {typeof errors.amount.message === "string" &&
-                  errors.amount.message}
-              </span>
-            )}
-          </div>
+          <NumberInputField
+            registerProps={register("amount")}
+            placeholder="Amount"
+            errors={errors.amount}
+          />
+
           <div className="flex items-center justify-between">
-            <button
-              type="submit"
-              className="w-full rounded-lg bg-black text-white px-4 py-2 font-semibold text-sm"
-            >
-              Save
-            </button>
+            <SubmitButton text="Submit" />
           </div>
         </form>
       </div>

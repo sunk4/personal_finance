@@ -13,6 +13,7 @@ import { useState } from "react";
 import ModalAddGoal from "../components/goals/ModalAddGoal";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { goalsValidator } from "../validators/goalsValidator";
+import Header from "../components/common/Header";
 
 const Goals: React.FC = () => {
   const { user } = useAuth();
@@ -100,15 +101,6 @@ const Goals: React.FC = () => {
 
   return (
     <>
-      <div className="mb-4 flex justify-between">
-        <h1 className="text-lg font-bold ">Goals</h1>
-        <button
-          onClick={onClickOpenModal}
-          className="rounded-lg bg-black text-white px-4 py-2 font-semibold text-sm"
-        >
-          Add Goal
-        </button>
-      </div>
       {isCreateModalOpen && (
         <ModalAddGoal
           onSubmitGoal={onSubmitGoal}
@@ -118,6 +110,7 @@ const Goals: React.FC = () => {
           onClickCloseModal={onClickCloseModal}
         />
       )}
+      <Header onClickOpenModal={onClickOpenModal} text="Goal" />
       {goals && (
         <GoalsGrid
           goals={goals}
