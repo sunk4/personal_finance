@@ -29,12 +29,12 @@ The Personal Finance App is designed to help users manage their financial transa
 
 ## Technologies
 
-- **Core Frontend Technologies:** React, React Router, React Hook Form, Axios, Yup
-- **UI & Styling:** MUI (Material UI), Emotion (CSS-in-JS), Normalize.css
+- **Core Frontend Technologies:** React, React Router, React Hook Form, useSWR, Yup
+- **UI & Styling:** Tailwind, React-icons, Normalize.css
 - **Date Management:** date-fns
 - **Development Tools:** TypeScript, Vite, ESLint, Prettier, Nodemon
 - **Containerization:** Docker
-- **Backend:** Spring Boot, Spring Data JPA, Spring Security, Spring Validation, Thymeleaf, Spring Mail, JWT (JSON Web Token), OpenAPI, Mockito, JUnit
+- **Backend:** Spring Boot, Spring Data JPA, Spring Security, Spring Validation, OpenAPI, Mockito, JUnit
 - **Database:** PostgreSQL
 - **Others:** dotenv (for environment variables), Lombok, Maven
 
@@ -54,10 +54,10 @@ List the software and tools required to run the application.
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/sunk4/task-tracker
+   git clone https://github.com/sunk4/personal_finance
    ```
 
-2. Build and run the backend services using Docker Compose:
+2. Build backend services using Docker Compose:
 
    ```bash
    docker-compose up --build
@@ -69,21 +69,42 @@ List the software and tools required to run the application.
    docker-compose down
    ```
 
-3. Open a new terminal for the frontend, and navigate to the frontend directory:
+3. Set up keycloak
+
+   - **Access Keycloak**: Open your browser and go to [http://localhost:8080](http://_vscodecontentref_/1). Log in with the admin credentials specified in the [docker-compose.yml](http://_vscodecontentref_/2) file (`admin/admin`).
+
+   - **Create a Client**:
+   - In the new realm, go to the "Clients" section and click "Create".
+   - Enter the client ID (e.g., [frontend](http://_vscodecontentref_/3)) and select "OpenID Connect" as the client protocol.
+
+   - **Configure Client**:
+   - Set "Root URL" to `http://localhost:5174`.
+   - Set "Home URL" to `http://localhost:5174`.
+   - Set "Valid reciderect Uris" to `http://localhost:5174/*`.
+   - Valid post logout redirect URIs to `http://localhost:5174/login`.
+   - Web origins to `http://localhost:5174`.
+
+4. Run backend services using command in termin:
+
+   ```bash
+   mvn spring-boot:run
+   ```
+
+5. Open a new terminal for the frontend, and navigate to the frontend directory:
 
    ```bash
    cd frontend
    ```
 
-4. Install the frontend dependencies:
+6. Install the frontend dependencies:
    ```bash
    npm install
    ```
-5. Generate api:
+7. Generate api:
    ```bash
    npm run generate-api
    ```
-6. Run the frontend application:
+8. Run the frontend application:
    ```bash
    npm run dev
    ```
@@ -101,9 +122,8 @@ Once the backend and frontend are running, follow these steps to use the applica
    - The backend API is running at `http://localhost:8088`. You can interact with it via tools like Postman or Curl.
    - Example: If it's a REST API, you can try an endpoint like:
      ```bash
-     curl http://localhost:8088/api/v1/tasks
+     curl http://localhost:8088/api/v1/hello_world/public
      ```
-   - This will return a list of tasks (or other data, depending on your app).
 
 3. **Using PostgreSQL**:
    - The PostgreSQL database is running in a container at `localhost:54320`.
@@ -125,4 +145,4 @@ If you have any questions or feedback, feel free to reach out:
 
 - **Email:** trnka.roman.careers@gmail.com
 - **LinkedIn:** [Roman Trnka](https://www.linkedin.com/in/roman-trnka-938666169/)
-- **GitHub:** [sunk4](https://github.com/sunk4/task-tracker)
+- **GitHub:** [sunk4](https://github.com/sunk4/personal_finance)
