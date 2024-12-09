@@ -4,6 +4,7 @@ import com.app.Dto.TransactionDto;
 import com.app.common.PageResponse;
 import com.app.enums.TransactionType;
 import com.app.service.TransactionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class TransactionController {
 
     @PostMapping
     public ResponseEntity<Void> createTransaction (
-            @RequestBody TransactionDto transactionDto, @RequestAttribute("userId") UUID userId
+            @Valid @RequestBody TransactionDto transactionDto, @RequestAttribute("userId") UUID userId
     ) {
         transactionService.createTransaction(transactionDto, userId);
         return ResponseEntity.status(HttpStatus.CREATED).build();

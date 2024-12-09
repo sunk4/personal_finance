@@ -64,6 +64,8 @@ const RecurringBills: React.FC = () => {
   const onClickCloseModal = (): void => {
     reset();
     setOpenCreateModal(false);
+    setIsUpdating(false);
+    setOpenOptionId(null);
   };
 
   const onSubmitRecurringBill = async (

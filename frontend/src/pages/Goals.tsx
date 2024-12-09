@@ -91,6 +91,8 @@ const Goals: React.FC = () => {
   const onClickCloseModal = (): void => {
     reset();
     setIsCreateModalOpen(false);
+    setIsUpdating(false);
+    setOpenOptionId(null);
   };
 
   if (isLoading) return <div>Loading...</div>;

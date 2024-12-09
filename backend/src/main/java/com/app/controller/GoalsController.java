@@ -1,7 +1,9 @@
 package com.app.controller;
 
+import com.app.Dto.AddWithdrawMoneyFromGoalDto;
 import com.app.Dto.GoalsDto;
 import com.app.service.GoalsService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,7 @@ public class GoalsController {
 
     @PostMapping
     public ResponseEntity<Void> createGoal (
-            @RequestBody GoalsDto goalsDto,
+            @Valid @RequestBody GoalsDto goalsDto,
             @RequestAttribute("userId") UUID userId
     ) {
         goalsService.createGoal(goalsDto, userId);
@@ -46,7 +48,7 @@ public class GoalsController {
     @PatchMapping("/{goalId}")
     public ResponseEntity<Void> updateGoal (
             @PathVariable UUID goalId,
-            @RequestBody GoalsDto goalsDto
+            @Valid @RequestBody GoalsDto goalsDto
     ) {
         goalsService.updateGoal(goalId, goalsDto);
 
@@ -56,7 +58,7 @@ public class GoalsController {
     @PatchMapping("/{goalId}/add-amount")
     public ResponseEntity<Void> addAmount (
             @PathVariable UUID goalId,
-            @RequestBody GoalsDto goalsDto
+            @Valid @RequestBody AddWithdrawMoneyFromGoalDto goalsDto
     ) {
         goalsService.addAmount(goalId, goalsDto.getCurrentAmount());
 

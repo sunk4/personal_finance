@@ -56,13 +56,13 @@ export interface GoalsDto {
      * @type {string}
      * @memberof GoalsDto
      */
-    goalName?: string;
+    goalName: string;
     /**
      * 
      * @type {number}
      * @memberof GoalsDto
      */
-    targetAmount?: number;
+    targetAmount: number;
     /**
      * 
      * @type {number}
@@ -80,19 +80,23 @@ export interface GoalsDto {
      * @type {Date}
      * @memberof GoalsDto
      */
-    startDate?: Date;
+    startDate: Date;
     /**
      * 
      * @type {Date}
      * @memberof GoalsDto
      */
-    targetDate?: Date;
+    targetDate: Date;
 }
 
 /**
  * Check if a given object implements the GoalsDto interface.
  */
 export function instanceOfGoalsDto(value: object): value is GoalsDto {
+    if (!('goalName' in value) || value['goalName'] === undefined) return false;
+    if (!('targetAmount' in value) || value['targetAmount'] === undefined) return false;
+    if (!('startDate' in value) || value['startDate'] === undefined) return false;
+    if (!('targetDate' in value) || value['targetDate'] === undefined) return false;
     return true;
 }
 
@@ -110,12 +114,12 @@ export function GoalsDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'createdAt': json['createdAt'] == null ? undefined : (new Date(json['createdAt'])),
         'updatedAt': json['updatedAt'] == null ? undefined : (new Date(json['updatedAt'])),
         'user': json['user'] == null ? undefined : UserDtoFromJSON(json['user']),
-        'goalName': json['goalName'] == null ? undefined : json['goalName'],
-        'targetAmount': json['targetAmount'] == null ? undefined : json['targetAmount'],
+        'goalName': json['goalName'],
+        'targetAmount': json['targetAmount'],
         'currentAmount': json['currentAmount'] == null ? undefined : json['currentAmount'],
         'remainingAmount': json['remainingAmount'] == null ? undefined : json['remainingAmount'],
-        'startDate': json['startDate'] == null ? undefined : (new Date(json['startDate'])),
-        'targetDate': json['targetDate'] == null ? undefined : (new Date(json['targetDate'])),
+        'startDate': (new Date(json['startDate'])),
+        'targetDate': (new Date(json['targetDate'])),
     };
 }
 
@@ -138,8 +142,8 @@ export function GoalsDtoToJSONTyped(value?: GoalsDto | null, ignoreDiscriminator
         'targetAmount': value['targetAmount'],
         'currentAmount': value['currentAmount'],
         'remainingAmount': value['remainingAmount'],
-        'startDate': value['startDate'] == null ? undefined : ((value['startDate']).toISOString()),
-        'targetDate': value['targetDate'] == null ? undefined : ((value['targetDate']).toISOString()),
+        'startDate': ((value['startDate']).toISOString()),
+        'targetDate': ((value['targetDate']).toISOString()),
     };
 }
 

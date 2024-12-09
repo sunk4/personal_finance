@@ -63,7 +63,7 @@ export interface TransactionDto {
      * @type {string}
      * @memberof TransactionDto
      */
-    transactionType?: TransactionDtoTransactionTypeEnum;
+    transactionType: TransactionDtoTransactionTypeEnum;
     /**
      * 
      * @type {number}
@@ -75,13 +75,13 @@ export interface TransactionDto {
      * @type {Date}
      * @memberof TransactionDto
      */
-    transactionDate?: Date;
+    transactionDate: Date;
     /**
      * 
      * @type {string}
      * @memberof TransactionDto
      */
-    reference?: string;
+    reference: string;
     /**
      * 
      * @type {number}
@@ -114,6 +114,9 @@ export type TransactionDtoTransactionTypeEnum = typeof TransactionDtoTransaction
  * Check if a given object implements the TransactionDto interface.
  */
 export function instanceOfTransactionDto(value: object): value is TransactionDto {
+    if (!('transactionType' in value) || value['transactionType'] === undefined) return false;
+    if (!('transactionDate' in value) || value['transactionDate'] === undefined) return false;
+    if (!('reference' in value) || value['reference'] === undefined) return false;
     return true;
 }
 
@@ -131,10 +134,10 @@ export function TransactionDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'createdAt': json['createdAt'] == null ? undefined : (new Date(json['createdAt'])),
         'updatedAt': json['updatedAt'] == null ? undefined : (new Date(json['updatedAt'])),
         'account': json['account'] == null ? undefined : AccountDtoFromJSON(json['account']),
-        'transactionType': json['transactionType'] == null ? undefined : json['transactionType'],
+        'transactionType': json['transactionType'],
         'amount': json['amount'] == null ? undefined : json['amount'],
-        'transactionDate': json['transactionDate'] == null ? undefined : (new Date(json['transactionDate'])),
-        'reference': json['reference'] == null ? undefined : json['reference'],
+        'transactionDate': (new Date(json['transactionDate'])),
+        'reference': json['reference'],
         'newBalance': json['newBalance'] == null ? undefined : json['newBalance'],
         'user': json['user'] == null ? undefined : UserDtoFromJSON(json['user']),
     };
@@ -157,7 +160,7 @@ export function TransactionDtoToJSONTyped(value?: TransactionDto | null, ignoreD
         'account': AccountDtoToJSON(value['account']),
         'transactionType': value['transactionType'],
         'amount': value['amount'],
-        'transactionDate': value['transactionDate'] == null ? undefined : ((value['transactionDate']).toISOString()),
+        'transactionDate': ((value['transactionDate']).toISOString()),
         'reference': value['reference'],
         'newBalance': value['newBalance'],
         'user': UserDtoToJSON(value['user']),

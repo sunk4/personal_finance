@@ -333,7 +333,9 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/GoalsDto" }
+              "schema": {
+                "$ref": "#/components/schemas/AddWithdrawMoneyFromGoalDto"
+              }
             }
           },
           "required": true
@@ -497,6 +499,7 @@
         }
       },
       "TransactionDto": {
+        "required": ["reference", "transactionDate", "transactionType"],
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -531,6 +534,7 @@
         }
       },
       "RecurringTransactionDto": {
+        "required": ["endDate", "frequency", "name", "startDate"],
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -558,6 +562,7 @@
         }
       },
       "GoalsDto": {
+        "required": ["goalName", "startDate", "targetAmount", "targetDate"],
         "type": "object",
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -570,6 +575,13 @@
           "remainingAmount": { "type": "number", "format": "double" },
           "startDate": { "type": "string", "format": "date-time" },
           "targetDate": { "type": "string", "format": "date-time" }
+        }
+      },
+      "AddWithdrawMoneyFromGoalDto": {
+        "required": ["currentAmount"],
+        "type": "object",
+        "properties": {
+          "currentAmount": { "type": "number", "format": "double" }
         }
       },
       "PageResponseTransactionDto": {

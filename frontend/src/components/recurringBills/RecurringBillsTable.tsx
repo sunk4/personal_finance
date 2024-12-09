@@ -8,7 +8,7 @@ import formatDate from "../../utils/formatDate";
 import { useEffect, useState } from "react";
 import ModalDeleteGoal from "../goals/ModalDeleteGoal";
 import ModalAddRecurringTransaction from "./ModalAddRecurringTransaction";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormSetValue } from "react-hook-form";
 import { getConfiguration } from "../../config/config";
 import { User } from "oidc-client-ts";
 
@@ -18,12 +18,16 @@ type RecurringBillsTableProps = {
   setIsUpdating: (isUpdating: boolean) => void;
   isUpdating: boolean;
   onSubmitRecurringBill: (data: RecurringTransactionDto) => Promise<void>;
-  register: ReturnType<typeof useForm>["register"];
-  handleSubmit: ReturnType<typeof useForm>["handleSubmit"];
-  errors: ReturnType<typeof useForm>["formState"]["errors"];
+  register: ReturnType<typeof useForm<RecurringTransactionDto>>["register"];
+  handleSubmit: ReturnType<
+    typeof useForm<RecurringTransactionDto>
+  >["handleSubmit"];
+  errors: ReturnType<
+    typeof useForm<RecurringTransactionDto>
+  >["formState"]["errors"];
   onClickCloseModal: () => void;
   user: User | undefined | null;
-  setValue: ReturnType<typeof useForm>["setValue"];
+  setValue: UseFormSetValue<RecurringTransactionDto>;
   openOptionId: string | null;
   setOpenOptionId: (id: string | null) => void;
 };

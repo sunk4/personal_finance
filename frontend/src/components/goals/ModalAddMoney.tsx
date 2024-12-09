@@ -1,5 +1,5 @@
 import React from "react";
-import { AddAmountRequest, GoalsDto } from "../../api";
+import { AddAmountRequest, AddWithdrawMoneyFromGoalDto } from "../../api";
 import { IoCloseOutline } from "react-icons/io5";
 import { Resolver, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -33,14 +33,14 @@ const ModalAddMoney: React.FC<ModalAddMoneyProps> = ({
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    const goalsDto: GoalsDto = {
+    const addWithdrawMoneyFromGoalDto: AddWithdrawMoneyFromGoalDto = {
       currentAmount: openWithdrawMoneyModal ? -data.amount : data.amount,
     };
 
     if (goalId) {
       const requestData: AddAmountRequest = {
         goalId,
-        goalsDto,
+        addWithdrawMoneyFromGoalDto,
       };
       await addMoneytoGoal(requestData);
       handleCloseModal();

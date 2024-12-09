@@ -15,16 +15,19 @@
 
 import * as runtime from '../runtime';
 import type {
+  AddWithdrawMoneyFromGoalDto,
   GoalsDto,
 } from '../models/index';
 import {
+    AddWithdrawMoneyFromGoalDtoFromJSON,
+    AddWithdrawMoneyFromGoalDtoToJSON,
     GoalsDtoFromJSON,
     GoalsDtoToJSON,
 } from '../models/index';
 
 export interface AddAmountRequest {
     goalId: string;
-    goalsDto: GoalsDto;
+    addWithdrawMoneyFromGoalDto: AddWithdrawMoneyFromGoalDto;
 }
 
 export interface CreateGoalRequest {
@@ -59,10 +62,10 @@ export class GoalsControllerApi extends runtime.BaseAPI {
             );
         }
 
-        if (requestParameters['goalsDto'] == null) {
+        if (requestParameters['addWithdrawMoneyFromGoalDto'] == null) {
             throw new runtime.RequiredError(
-                'goalsDto',
-                'Required parameter "goalsDto" was null or undefined when calling addAmount().'
+                'addWithdrawMoneyFromGoalDto',
+                'Required parameter "addWithdrawMoneyFromGoalDto" was null or undefined when calling addAmount().'
             );
         }
 
@@ -85,7 +88,7 @@ export class GoalsControllerApi extends runtime.BaseAPI {
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: GoalsDtoToJSON(requestParameters['goalsDto']),
+            body: AddWithdrawMoneyFromGoalDtoToJSON(requestParameters['addWithdrawMoneyFromGoalDto']),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);

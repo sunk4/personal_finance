@@ -6,8 +6,8 @@ import transactionTypes from "../../data/transactionTypes";
 
 type ModalAddTransactionProps = {
   onSubmitTransaction: (data: TransactionDto) => Promise<void>;
-  register: ReturnType<typeof useForm>["register"];
-  handleSubmit: ReturnType<typeof useForm>["handleSubmit"];
+  register: ReturnType<typeof useForm<TransactionDto>>["register"];
+  handleSubmit: ReturnType<typeof useForm<TransactionDto>>["handleSubmit"];
   errors: ReturnType<typeof useForm>["formState"]["errors"];
   onClickCloseModal: () => void;
 };

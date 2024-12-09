@@ -6,13 +6,13 @@ import { format } from "date-fns";
 
 type ModalAddGoalProps = {
   onSubmitGoal: (data: GoalsDto) => Promise<void>;
-  register: ReturnType<typeof useForm>["register"];
-  handleSubmit: ReturnType<typeof useForm>["handleSubmit"];
-  errors: ReturnType<typeof useForm>["formState"]["errors"];
+  register: ReturnType<typeof useForm<GoalsDto>>["register"];
+  handleSubmit: ReturnType<typeof useForm<GoalsDto>>["handleSubmit"];
+  errors: ReturnType<typeof useForm<GoalsDto>>["formState"]["errors"];
   onClickCloseModal: () => void;
   isUpdating?: boolean;
   goal?: GoalsDto | null;
-  setValue?: ReturnType<typeof useForm>["setValue"];
+  setValue?: ReturnType<typeof useForm<GoalsDto>>["setValue"];
 };
 
 const ModalAddGoal: React.FC<ModalAddGoalProps> = ({
@@ -31,11 +31,11 @@ const ModalAddGoal: React.FC<ModalAddGoalProps> = ({
       setValue("targetAmount", goal?.targetAmount);
       setValue(
         "startDate",
-        goal?.startDate ? format(goal?.startDate, "yyyy-MM-dd") : ""
+        format(goal.startDate, "yyyy-MM-dd") as unknown as Date
       );
       setValue(
         "targetDate",
-        goal?.targetDate ? format(goal?.targetDate, "yyyy-MM-dd") : ""
+        format(goal.targetDate, "yyyy-MM-dd") as unknown as Date
       );
     }
   }, [goal, setValue, isUpdating]);

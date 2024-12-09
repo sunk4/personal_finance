@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormSetValue } from "react-hook-form";
 import { RecurringTransactionDto } from "../../api";
 import { IoCloseOutline } from "react-icons/io5";
 import frequencyOptions from "../../data/frequencyOptions";
@@ -7,14 +7,18 @@ import { format } from "date-fns";
 
 type ModalAddRecurringTransactionProps = {
   onSubmitRecurringBill: (data: RecurringTransactionDto) => Promise<void>;
-  register: ReturnType<typeof useForm>["register"];
-  handleSubmit: ReturnType<typeof useForm>["handleSubmit"];
-  errors: ReturnType<typeof useForm>["formState"]["errors"];
+  register: ReturnType<typeof useForm<RecurringTransactionDto>>["register"];
+  handleSubmit: ReturnType<
+    typeof useForm<RecurringTransactionDto>
+  >["handleSubmit"];
+  errors: ReturnType<
+    typeof useForm<RecurringTransactionDto>
+  >["formState"]["errors"];
   onClickCloseModal: () => void;
   setIsUpdating?: (isUpdating: boolean) => void;
   isUpdating?: boolean;
   recurringTransaction?: RecurringTransactionDto | null;
-  setValue?: ReturnType<typeof useForm>["setValue"];
+  setValue?: UseFormSetValue<RecurringTransactionDto>;
 };
 
 const ModalAddRecurringTransaction: React.FC<
@@ -31,25 +35,19 @@ const ModalAddRecurringTransaction: React.FC<
 }) => {
   useEffect(() => {
     if (isUpdating && recurringTransaction && setValue) {
-      setValue("name", recurringTransaction?.name);
-      setValue("amount", recurringTransaction?.amount);
+      setValue("name", recurringTransaction.name);
+      setValue("amount", recurringTransaction.amount);
       setValue(
         "startDate",
-        recurringTransaction?.startDate
-          ? format(recurringTransaction?.startDate, "yyyy-MM-dd")
-          : ""
+        format(recurringTransaction.startDate, "yyyy-MM-dd") as unknown as Date
       );
       setValue(
         "endDate",
-        recurringTransaction?.endDate
-          ? format(recurringTransaction?.endDate, "yyyy-MM-dd")
-          : ""
+        format(recurringTransaction.endDate, "yyyy-MM-dd") as unknown as Date
       );
-      setValue("frequency", recurringTransaction?.frequency);
+      setValue("frequency", recurringTransaction.frequency);
     }
   }, [recurringTransaction, setValue, isUpdating]);
-
-  console.log(errors);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">

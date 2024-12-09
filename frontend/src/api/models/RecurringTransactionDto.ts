@@ -69,7 +69,7 @@ export interface RecurringTransactionDto {
      * @type {string}
      * @memberof RecurringTransactionDto
      */
-    name?: string;
+    name: string;
     /**
      * 
      * @type {number}
@@ -81,19 +81,19 @@ export interface RecurringTransactionDto {
      * @type {string}
      * @memberof RecurringTransactionDto
      */
-    frequency?: RecurringTransactionDtoFrequencyEnum;
+    frequency: RecurringTransactionDtoFrequencyEnum;
     /**
      * 
      * @type {Date}
      * @memberof RecurringTransactionDto
      */
-    startDate?: Date;
+    startDate: Date;
     /**
      * 
      * @type {Date}
      * @memberof RecurringTransactionDto
      */
-    endDate?: Date;
+    endDate: Date;
 }
 
 
@@ -117,6 +117,10 @@ export type RecurringTransactionDtoFrequencyEnum = typeof RecurringTransactionDt
  * Check if a given object implements the RecurringTransactionDto interface.
  */
 export function instanceOfRecurringTransactionDto(value: object): value is RecurringTransactionDto {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('frequency' in value) || value['frequency'] === undefined) return false;
+    if (!('startDate' in value) || value['startDate'] === undefined) return false;
+    if (!('endDate' in value) || value['endDate'] === undefined) return false;
     return true;
 }
 
@@ -135,11 +139,11 @@ export function RecurringTransactionDtoFromJSONTyped(json: any, ignoreDiscrimina
         'updatedAt': json['updatedAt'] == null ? undefined : (new Date(json['updatedAt'])),
         'user': json['user'] == null ? undefined : UserDtoFromJSON(json['user']),
         'account': json['account'] == null ? undefined : AccountDtoFromJSON(json['account']),
-        'name': json['name'] == null ? undefined : json['name'],
+        'name': json['name'],
         'amount': json['amount'] == null ? undefined : json['amount'],
-        'frequency': json['frequency'] == null ? undefined : json['frequency'],
-        'startDate': json['startDate'] == null ? undefined : (new Date(json['startDate'])),
-        'endDate': json['endDate'] == null ? undefined : (new Date(json['endDate'])),
+        'frequency': json['frequency'],
+        'startDate': (new Date(json['startDate'])),
+        'endDate': (new Date(json['endDate'])),
     };
 }
 
@@ -162,8 +166,8 @@ export function RecurringTransactionDtoToJSONTyped(value?: RecurringTransactionD
         'name': value['name'],
         'amount': value['amount'],
         'frequency': value['frequency'],
-        'startDate': value['startDate'] == null ? undefined : ((value['startDate']).toISOString()),
-        'endDate': value['endDate'] == null ? undefined : ((value['endDate']).toISOString()),
+        'startDate': ((value['startDate']).toISOString()),
+        'endDate': ((value['endDate']).toISOString()),
     };
 }
 

@@ -2,6 +2,7 @@ package com.app.controller;
 
 import com.app.Dto.RecurringTransactionDto;
 import com.app.service.RecurringTransactionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class RecurringTransactionController {
     @PostMapping
     public ResponseEntity<Void> createRecurringTransaction (
             @RequestBody RecurringTransactionDto recurringTransactionDto,
-            @RequestAttribute("userId") UUID userId
+            @Valid @RequestAttribute("userId") UUID userId
     ) {
         recurringTransactionService.createRecurringTransaction(recurringTransactionDto, userId);
 
@@ -54,7 +55,7 @@ public class RecurringTransactionController {
     @PatchMapping("/{recurringTransactionId}")
     public ResponseEntity<Void> updateRecurringTransaction (
             @PathVariable UUID recurringTransactionId,
-            @RequestBody RecurringTransactionDto recurringTransactionDto
+            @Valid @RequestBody RecurringTransactionDto recurringTransactionDto
     ) {
         recurringTransactionService.updateRecurringTransaction(recurringTransactionId, recurringTransactionDto);
 

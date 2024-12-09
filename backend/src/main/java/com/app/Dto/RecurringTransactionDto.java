@@ -1,6 +1,8 @@
 package com.app.Dto;
 
 import com.app.enums.Frequency;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,9 +17,14 @@ import java.time.LocalDateTime;
 public class RecurringTransactionDto extends BaseDto {
     private UserDto user;
     private AccountDto account;
+    @NotNull
     private String name;
+    @Positive
     private double amount;
+    @NotNull
     private Frequency frequency;
+    @NotNull
     private LocalDateTime startDate;
+    @NotNull
     private LocalDateTime endDate;
 }

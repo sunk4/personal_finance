@@ -21,14 +21,14 @@ interface GoalsGridProps {
   openOptionId: string | null;
   setOpenOptionId: (id: string | null) => void;
   user: User | undefined | null;
-  setValue: ReturnType<typeof useForm>["setValue"];
+  setValue: ReturnType<typeof useForm<GoalsDto>>["setValue"];
   isUpdating: boolean;
   setIsUpdating: (isUpdating: boolean) => void;
   onSubmitGoal: (data: GoalsDto) => Promise<void>;
-  register: ReturnType<typeof useForm>["register"];
-  handleSubmit: ReturnType<typeof useForm>["handleSubmit"];
+  handleSubmit: ReturnType<typeof useForm<GoalsDto>>["handleSubmit"];
   errors: ReturnType<typeof useForm>["formState"]["errors"];
   onClickCloseModal: () => void;
+  register: ReturnType<typeof useForm<GoalsDto>>["register"];
 }
 
 const GoalsGrid: React.FC<GoalsGridProps> = ({
