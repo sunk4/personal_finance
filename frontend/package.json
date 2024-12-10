@@ -10,9 +10,7 @@
     "lint": "eslint . --ext .ts,.tsx",
     "preview": "vite preview",
     "generate-api": "openapi-generator-cli generate -i src/openapi/openapi.json -g typescript-fetch -o ./src/api",
-    "test": "jest",
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "test": "jest"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
@@ -44,7 +42,6 @@
     "@typescript-eslint/parser": "^8.5.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.20",
-    "cypress": "^13.16.1",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.30.0",
