@@ -1,4 +1,3 @@
-import { BsThreeDots } from "react-icons/bs";
 import {
   GetRecurringTransactionRequest,
   RecurringTransactionControllerApi,
@@ -6,11 +5,13 @@ import {
 } from "../../api";
 import formatDate from "../../utils/formatDate";
 import { useEffect, useState } from "react";
-import ModalDeleteGoal from "../goals/ModalDeleteGoal";
+import ModalDeleteItem from "../common/ModalDeleteItem";
 import ModalAddRecurringTransaction from "./ModalAddRecurringTransaction";
 import { useForm, UseFormSetValue } from "react-hook-form";
 import { getConfiguration } from "../../config/config";
 import { User } from "oidc-client-ts";
+import TableHeader from "./TableHeader";
+import RecurringBillItem from "./RecurringBillItem";
 
 type RecurringBillsTableProps = {
   recurringBills: RecurringTransactionDto[];
@@ -88,67 +89,8 @@ const RecurringBillsTable: React.FC<RecurringBillsTableProps> = ({
   }, [openOptionId, user]);
   return (
     <ul className="my-6">
-      <li className="p-2 flex justify-between items-center">
-        <p className="text-gray-400 text-xs w-1/6 text-center">Account name</p>
-        <p className="text-gray-400 text-xs w-1/6 text-center">Name</p>
-        <p className="text-gray-400 text-xs w-1/6 text-center">Frequency</p>
-        <p className="text-gray-400 text-xs w-1/6 text-center">Start Date</p>
-        <p className="text-gray-400 text-xs w-1/6 text-center">End Date</p>
-        <p className="text-gray-400 text-xs w-1/6 text-center">Amount</p>
-        <p className="text-gray-400 text-xs w-1/6 text-center"></p>
-      </li>
-      <hr />
-      {recurringBills && recurringBills.length > 0 ? (
-        recurringBills.map((bill: RecurringTransactionDto) => (
-          <div key={bill.id}>
-            <li className="p-2 flex justify-between items-center">
-              <p className="text-center text-xs font-bold w-1/6">
-                {bill.account?.name}
-              </p>
-              <p className="text-center text-xs font-bold w-1/6">{bill.name}</p>
-
-              <p className="text-gray-400 text-xs text-center w-1/6">
-                {bill.frequency}
-              </p>
-              <p className="text-gray-400 text-xs text-center w-1/6">
-                {formatDate(bill.startDate)}
-              </p>
-              <p className="text-gray-400 text-xs text-center w-1/6">
-                {formatDate(bill.endDate)}
-              </p>
-              <p className="text-center w-1/6 text-xs">
-                €{bill.amount?.toFixed(2) ?? "N/A"}
-              </p>
-              <p className="text-center w-1/6 text-xs">
-                <button onClick={() => handleOpenOptions(bill.id)}>
-                  <BsThreeDots />
-                </button>
-              </p>
-              {openOptionId === bill.id && !openDeleteModal && (
-                <div className="absolute right-10 rounded-lg bg-white p-2">
-                  <button onClick={handleUpdateOpenModal} className="text-sm">
-                    Edit
-                  </button>
-                  <hr />
-                  <button
-                    onClick={handleDeleteOpenModal}
-                    className="text-sm text-red-500"
-                  >
-                    Delete
-                  </button>
-                </div>
-              )}
-            </li>
-            <hr />
-          </div>
-        ))
-      ) : (
-        <li className="p-2 text-center text-gray-400 text-xs">
-          No upcoming bills
-        </li>
-      )}
       {openDeleteModal && (
-        <ModalDeleteGoal
+        <ModalDeleteItem
           openOptionId={openOptionId}
           deleteItem={deleteItem}
           handleDeleteOpenModal={handleDeleteOpenModal}
@@ -168,6 +110,23 @@ const RecurringBillsTable: React.FC<RecurringBillsTableProps> = ({
           recurringTransaction={recurringTransaction}
           setValue={setValue}
         />
+      )}
+      <TableHeader />
+      {recurringBills && recurringBills.length > 0 ? (
+        recurringBills.map((bill: RecurringTransactionDto) => (
+          <RecurringBillItem
+            key={bill.id}
+            bill={bill}
+            openOptionId={openOptionId}
+            openDeleteModal={openDeleteModal}
+            handleOpenOptions={handleOpenOptions}
+            handleUpdateOpenModal={handleUpdateOpenModal}
+            handleDeleteOpenModal={handleDeleteOpenModal}
+            formatDate={formatDate}
+          />
+        ))
+      ) : (
+        <p>No recurring bills found.</p>
       )}
     </ul>
   );

@@ -1,4 +1,4 @@
-import TableHeaderItem from "./TableHeaderItem";
+import TableHeaderItem from "../common/TableHeaderItem";
 
 const TableHeader: React.FC = () => {
   return (

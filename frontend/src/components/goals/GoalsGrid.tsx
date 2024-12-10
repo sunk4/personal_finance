@@ -4,15 +4,16 @@ import {
   GoalsControllerApi,
   GoalsDto,
 } from "../../api";
-import { BsThreeDots } from "react-icons/bs";
-import formatDate from "../../utils/formatDate";
 import { useEffect, useState } from "react";
-import ModalDeleteGoal from "./ModalDeleteGoal";
+import ModalDeleteItem from "../common/ModalDeleteItem";
 import ModalAddMoney from "./ModalAddMoney";
 import { useForm } from "react-hook-form";
 import { User } from "oidc-client-ts";
 import { getConfiguration } from "../../config/config";
 import ModalAddGoal from "./ModalAddGoal";
+import GoalActions from "./GoalActions";
+import GoalProgress from "./GoalProgress";
+import GoalHeader from "./GoalHeader";
 
 interface GoalsGridProps {
   goals: GoalsDto[];
@@ -111,7 +112,7 @@ const GoalsGrid: React.FC<GoalsGridProps> = ({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
       {openDeleteModal && (
-        <ModalDeleteGoal
+        <ModalDeleteItem
           openOptionId={openOptionId}
           deleteItem={deleteGoal}
           handleDeleteOpenModal={handleDeleteOpenModal}
@@ -145,83 +146,22 @@ const GoalsGrid: React.FC<GoalsGridProps> = ({
       )}
       {goals.map((goal: GoalsDto) => (
         <div key={goal.id} className="bg-white shadow-md rounded-lg p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-base font-semibold">{goal.goalName}</h2>
-            <div className="relative inline-block">
-              <button onClick={() => handleOpenOptions(goal.id)}>
-                <BsThreeDots />
-              </button>
-              {openOptionId === goal.id && !openDeleteModal && (
-                <div className="absolute right-10 -top-2 rounded-lg bg-white p-2">
-                  <button onClick={handleUpdateOpenModal} className="text-sm">
-                    Edit
-                  </button>
-                  <hr />
-                  <button
-                    onClick={handleDeleteOpenModal}
-                    className="text-sm text-red-500"
-                  >
-                    Delete
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="flex items-center justify-between">
-            <p className="text-gray-400 text-xs">Total saved</p>
-            <p className="text-xl font-bold">
-              €{goal.currentAmount?.toFixed(2) ?? "N/A"}
-            </p>
-          </div>
-          {goal.targetAmount && (
-            <>
-              <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                <div
-                  className={`h-2 rounded-full ${goal.remainingAmount !== undefined && ((goal.targetAmount - goal.remainingAmount) / goal.targetAmount) * 100 >= 100 ? "bg-green-600" : "bg-warm-beige"}`}
-                  style={{
-                    width: `${goal.remainingAmount !== undefined ? (((goal.targetAmount - goal.remainingAmount) / goal.targetAmount) * 100 <= 100 ? ((goal.targetAmount - goal.remainingAmount) / goal.targetAmount) * 100 : 100) : 0}%`,
-                  }}
-                ></div>
-              </div>
-              <div className="flex justify-between mt-2">
-                <p className="text-gray-400 text-xs font-semibold">
-                  {goal.remainingAmount !== undefined
-                    ? (
-                        ((goal.targetAmount - goal.remainingAmount) /
-                          goal.targetAmount) *
-                        100
-                      ).toFixed(2)
-                    : "N/A"}
-                  %
-                </p>
-                <p className="text-gray-400 text-xs">
-                  Target of €{goal.targetAmount?.toFixed(2) ?? "N/A"}
-                </p>
-              </div>
-              <div className="flex justify-between mt-2">
-                <p className="text-gray-400 text-xs">
-                  {formatDate(goal.startDate)}
-                </p>
-                <p className="text-gray-400 text-xs font-semibold">
-                  {formatDate(goal.targetDate)}
-                </p>
-              </div>
-              <div className="flex justify-center mt-4 gap-2">
-                <button
-                  onClick={() => handleAddMoneyOpenModal(goal.id)}
-                  className="rounded-lg bg-ivory-sand px-4 py-2 font-semibold text-sm"
-                >
-                  Add Money
-                </button>
-                <button
-                  onClick={() => handleWithdrawMoneyOpenModal(goal.id)}
-                  className="rounded-lg bg-ivory-sand px-4 py-2 font-semibold text-sm"
-                >
-                  Withdraw Money
-                </button>
-              </div>
-            </>
-          )}
+          <GoalHeader
+            goal={goal}
+            handleOpenOptions={handleOpenOptions}
+            openOptionId={openOptionId}
+            handleDeleteOpenModal={handleDeleteOpenModal}
+            handleUpdateOpenModal={handleUpdateOpenModal}
+            openDeleteModal={openDeleteModal}
+          />
+
+          <GoalProgress goal={goal} />
+
+          <GoalActions
+            goalId={goal.id}
+            handleAddMoneyOpenModal={handleAddMoneyOpenModal}
+            handleWithdrawMoneyOpenModal={handleWithdrawMoneyOpenModal}
+          />
         </div>
       ))}
     </div>

@@ -10,7 +10,7 @@ const Login = () => {
   const { signinRedirect, isAuthenticated } = useAuth();
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/overview");
+      navigate("/transactions");
     }
   }, [isAuthenticated, navigate]);
 

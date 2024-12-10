@@ -14,7 +14,7 @@ const NotFoundContent: React.FC = () => (
       </p>
       <Link
         className="bg-dark-slate-blue text-white rounded-lg px-5 py-3"
-        to="/overview"
+        to="/transactions"
       >
         Back to home?
       </Link>

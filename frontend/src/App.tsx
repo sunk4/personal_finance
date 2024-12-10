@@ -9,7 +9,6 @@ import ProtectedRoute from "./ProtectedRoute";
 import SharedLayout from "./SharedLayout";
 import { useAuth } from "react-oidc-context";
 import NotFound from "./pages/NotFound";
-import OverView from "./pages/OverView";
 import Transactions from "./pages/Transactions";
 import Goals from "./pages/Goals";
 import RecurringBills from "./pages/RecurringBills";
@@ -29,7 +28,6 @@ const App = () => {
 
         <Route element={<ProtectedRoute />}>
           <Route element={<SharedLayout />}>
-            <Route path="/overview" element={<OverView />} />
             <Route path="/transactions" element={<Transactions />} />
             <Route path="/goals" element={<Goals />} />
             <Route path="/recurring_bills" element={<RecurringBills />} />

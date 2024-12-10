@@ -8,6 +8,7 @@ import ModalAddAccount from "../components/settings/ModalAddAccount";
 import { Resolver, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { accountValidator } from "../validators/accountValidator";
+import WelcomeMessage from "../components/settings/WelcomeMessage";
 
 const Settings: React.FC = () => {
   const { user } = useAuth();
@@ -116,20 +117,7 @@ const Settings: React.FC = () => {
         {accounts && accounts.length > 0 ? (
           <TableAccounts accounts={accounts} />
         ) : (
-          <div className="flex flex-col items-center justify-center h-full">
-            <h2 className="text-2xl font-semibold mb-4">
-              Welcome! {user && user.profile.name}
-            </h2>
-            <p className="text-lg mb-6">
-              Please create your account to get started.
-            </p>
-            <button
-              onClick={onClickOpenModal}
-              className="rounded-lg bg-black text-white px-4 py-2 font-semibold text-sm"
-            >
-              Add Account
-            </button>
-          </div>
+          <WelcomeMessage user={user} onClickOpenModal={onClickOpenModal} />
         )}
       </section>
     </>
