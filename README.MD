@@ -34,7 +34,7 @@ The Personal Finance App is designed to help users manage their financial transa
 - **Date Management:** date-fns
 - **Development Tools:** TypeScript, Vite, ESLint, Prettier, Nodemon
 - **Containerization:** Docker
-- **Backend:** Spring Boot, Spring Data JPA, Spring Security, Spring Validation, OpenAPI, Mockito, JUnit
+- **Backend:** Spring Boot, Spring Data JPA, Spring Security, Spring Validation, OpenAPI
 - **Database:** PostgreSQL
 - **Others:** dotenv (for environment variables), Lombok, Maven
 
