@@ -6,8 +6,6 @@ The Personal Finance App is designed to help users manage their financial transa
 
 ![PostgreSQL Schema Diagram](finance-app-schema.png)
 
-**Note:** The service is running on a free tier on render.com, so performance may be limited. You can access it here: [Task Tracker Service](https://task-tracker-w7g0.onrender.com/projects)
-
 ## Table of Contents
 
 - [Features](#features)
