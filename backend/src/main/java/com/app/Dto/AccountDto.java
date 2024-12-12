@@ -4,15 +4,13 @@ import com.app.enums.AccountStatus;
 import com.app.enums.AccountType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class AccountDto extends BaseDto {
     private UserDto user;
     @NotNull

@@ -14,8 +14,8 @@ const NavLinkComponent: React.FC<NavLinkComponentProps> = ({
   <NavLink
     className={({ isActive }) =>
       isActive
-        ? "p-2 flex flex-col lg:flex-row items-center text-ivory-sand font-bold text-center"
-        : "p-2 flex flex-col lg:flex-row items-center hover:text-ivory-sand text-center"
+        ? "m-2 flex flex-col lg:flex-row items-center text-ivory-sand font-bold text-center"
+        : "m-2 flex flex-col lg:flex-row items-center hover:text-ivory-sand text-center"
     }
     to={to}
   >
